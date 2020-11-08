@@ -12,10 +12,12 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.dropdown import DropDown
 from kivy.properties import ObjectProperty
 from kivy.base import runTouchApp
+from kivy.uix.spinner import Spinner
 
 
-class DropBut(Button):
-    pass
+class CustomDropDown(DropDown):
+    for i in range(5):
+        print(i)
 
 
 # Workout class
@@ -60,6 +62,7 @@ class FirstPage(Screen):
 
 # Second Page (Homepage)
 class SecondPage(Screen):
+
     def __init__(self, **kwargs):
         super(SecondPage, self).__init__(**kwargs)
         # Background image using AsyncImage
@@ -98,32 +101,27 @@ class SecondPage(Screen):
 
 # ThirdPage (Schedule from inputs)
 class ThirdPage(Screen):
-    def __init__(self, **kwargs):
-        super(ThirdPage, self).__init__(**kwargs)
-        layout = GridLayout()
-        self.add_widget(layout)
+    def __init__(self, *args, **kwargs):
+        super(ThirdPage, self).__init__(*args, **kwargs)
+
+        spinner = Spinner(
+            # default value shown
+            text='Day',
+            # available values
+            values=('Mon', 'Tues', 'Weds', 'Thurs', 'Fri'),
+            # just for positioning in our example
+            size_hint=(None, None),
+            size=(200, 144),
+            pos_hint={'center_x': .5, 'center_y': .5})
+
+        def show_selected_value(self):
+            print(self)
+
+        spinner.bind(on_press=show_selected_value)
+        self.add_widget(spinner)
 
 
-        # # create a dropdown with 10 buttons
-        # dropdown = DropDown()
-        # for index in range(3):
-        #
-        #     # Adding button in drop down list
-        #     btn = Button(text='Value % d' % index, size_hint_y=None, height=40)
-        #
-        #     # binding the button to show the text when selected
-        #     btn.bind(on_press=lambda btn: dropdown.select(btn.text))
-        #
-        #     # then add the button inside the dropdown
-        #     dropdown.add_widget(btn)
-        # # create a big main button
-        # mainbutton = Button(text='Hello', size_hint=(None, None), pos=(350, 300))
-        # mainbutton.bind(on_release=dropdown.open)
-        # # dropdown list and assign the data to the button text.
-        # dropdown.bind(on_select=lambda instance, x: setattr(mainbutton, 'text', x))
-        #
-
-        # Main class
+# Main class
 class MyApp(App):
     def build(self):
         sm = ScreenManagement(transition=FadeTransition())
